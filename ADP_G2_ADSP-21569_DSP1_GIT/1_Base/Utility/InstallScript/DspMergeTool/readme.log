@@ -1,0 +1,164 @@
+
+Program Name:
+=============
+	DspMergeTool
+
+Description:
+============
+	
+
+Tested with:
+============
+	Windows 7
+	Visual Studio 2010
+
+Revision History:
+=================
+	2020.10.15	v1.1.0	Added a function to convert schematic(SSn) metadata of GRIFFIN DSP to HEX file for flash 
+	2020.10.16	v1.1.1	Bug Fix : argument count validation checking routine
+	2020.10.16	v1.2.0	Added a function to convert the sound source(MOBIS ASD or ELVIS ASD) file to HEX file for flash
+	2020.10.29	v1.2.1	Recompile after adding static library
+	2020.10.30	v1.2.2	Bug Fix : Single-digit number parsing is possible after prefix '0x'
+	2020.11.16	v1.2.3	Bug Fix : Error calculating size of buffer for additional tags
+						Bug Fix : Error adding next extended linear address even if no data remains
+
+Usage:
+======
+
+	*************
+	* SIGMA DSP *
+	*************
+
+		(ex.)
+		DspMergeTool.exe SIGMA DM0 Sigma_DM0.hex [Input]_TxBuffer_Sigma.dat A0000
+		DspMergeTool.exe SIGMA DM1 Sigma_DM1.hex [Input]_TxBuffer_Sigma.dat 10000
+		DspMergeTool.exe SIGMA PROGRAM Sigma_Program.hex [Input]_TxBuffer_Sigma.dat 70000
+		DspMergeTool.exe SIGMA PARAMS Param1.hex [Input]_Mode1.params 100000
+		DspMergeTool.exe SIGMA PARAMS Param2.hex [Input]_Mode2.params 110000
+		DspMergeTool.exe SIGMA ADDRTBL Sigma_AddressLabel.hex [Input]_Mode1.params [Input]_AddressLabel.tbl 0
+		DspMergeTool.exe MERGE NEW [Output]_Sigma.hex Sigma_DM0.hex Sigma_DM1.hex Sigma_Program.hex Sigma_OptionTable.hex Sigma_TuneDate.hex Param1.hex Param2.hex Param3.hex Param4.hex Param5.hex Param6.hex Param7.hex Param8.hex Param9.hex Param10.hex Param11.hex Param12.hex Param13.hex Param14.hex Param15.hex Sigma_AddressLabel.hex
+		DspMergeTool.exe MERGE EOF [Output]_Sigma.hex
+
+
+	*************
+	* SHARC DSP *
+	*************
+
+		(ex.)
+		DspMergeTool.exe SHARC SSN SH_SSn1.hex [Input]_TxMetaBuffer_SSn1.dat 210000
+		DspMergeTool.exe SHARC SSN SH_SSn2.hex [Input]_TxMetaBuffer_SSn2.dat 220000
+		DspMergeTool.exe SHARC SSN SH_SSn3.hex [Input]_TxMetaBuffer_SSn3.dat 230000
+		DspMergeTool.exe OPTION EXT SH_OptionTable.hex [Input]_OptionTable.tbl 240000
+		DspMergeTool.exe OPTION EXT SH_TuneDate.hex [Input]_Tuning_DateVersion.tbl 240400
+		DspMergeTool.exe MERGE NEW SH_SSn_App.hex SH_SSn1.hex SH_SSn2.hex SH_SSn3.hex 
+		DspMergeTool.exe MERGE NEW [Output]_Sharc.hex SH_SSn_App.hex SH_OptionTable.hex SH_TuneDate.hex SH_AddressLabel.hex
+		DspMergeTool.exe MERGE EOF [Output]_Sharc.hex
+
+
+	***************
+	* GRIFFIN DSP *
+	***************
+
+	DspMergeTool.exe [GRIFFIN] [SSN#] [SSN# Hex File] [SSN# MetaData File] [SSN# Start Address]
+		- GRIFFIN : DSP type
+		- SSN# : SSN number (Since SSN1 includes SMAP, parameters must be identified.)
+		- SSN# Hex File : output file
+		- SSN# MetaData File : input file
+		- SSN# Start Address : flash address
+
+		(ex.)
+		DspMergeTool.exe GRIFFIN SSN1 SSN1.hex TxMetaBuffer_SH0_SSN1.dat 40000
+		DspMergeTool.exe GRIFFIN SSN2 SSN2.hex TxMetaBuffer_SH0_SSN2.dat 60000
+		DspMergeTool.exe GRIFFIN SSN3 SSN3.hex TxMetaBuffer_SH0_SSN3.dat 80000
+
+
+	DspMergeTool.exe [GRIFFIN] [ADDRTBL] [ADDRTBL Hex File] [Label Table File] [Start Address] [SSN1 MetaData File] [SSN2 MetaData File] ...
+		- GRIFFIN : DSP type
+		- ADDRTBL : command type
+		- ADDRTBL Hex File : output file
+		- Label Table File : input file
+		- Start Address : flash address
+		- SSN# MetaData File : input file
+
+		(ex.)
+		DspMergeTool.exe GRIFFIN ADDRTBL ADDRTBL.hex Address_Label.h F0000 TxMetaBuffer_SH0_SSN1.dat TxMetaBuffer_SH0_SSN2.dat TxMetaBuffer_SH0_SSN3.dat
+
+
+	DspMergeTool.exe [MERGE] [HEX] [Full Hex File] [Merged Hex File 1] [Merged Hex File 2] ...
+		- MERGE : file merge
+		- HEX : command type
+		- Full Hex File : output file
+		- Merged Hex File : input file
+
+		(ex.)
+		DspMergeTool.exe MERGE HEX Full_GRIFFIN.hex DSP_Sounder.ldr SSN1.hex SSN2.hex SSN3.hex ADDRTBL.hex
+
+
+	**********************
+	* MOBIS SOUND SOURCE *
+	**********************
+
+	DspMergeTool.exe [ASD] [MOBIS] [OUTPUT Hex File] [INPUT Dat File] [Custom Type] [Start Address] ... [OUTPUT Hex File] [INPUT Dat File] [Custom Type] [Start Address]
+		- GRIFFIN : DSP type
+		- OUTPUT Hex File : Convert floating point value to 4-byte Intel hexa value
+		- INPUT Dat File : mobis ASD data file
+		- Custom Type : -COSTUM
+		- Start Address : flash address
+
+		(ex.)
+		ASD MOBIS MASD_18.hex MASD.dat -COSTUM 180000 MASD_19.hex MASD.dat -COSTUM 190000 MASD_1A.hex MASD.dat -COSTUM 1A0000 MASD_1B.hex MASD.dat -COSTUM 1B0000 MASD_1C.hex MASD.dat -COSTUM 1C0000 MASD_1D.hex MASD.dat -COSTUM 1D0000 MASD_1E.hex MASD.dat -COSTUM 1E0000 MASD_1F.hex MASD.dat -COSTUM 1F0000 MASD_20.hex MASD.dat -COSTUM 200000
+		MERGE HEX MASD.hex MASD_18.hex MASD_19.hex MASD_1A.hex MASD_1B.hex MASD_1C.hex MASD_1D.hex MASD_1E.hex MASD_1F.hex MASD_20.hex
+
+
+	**********************
+	* ELVIS SOUND SOURCE *
+	**********************
+
+	DspMergeTool.exe [ASD] [ELVIS] [OUTPUT Hex File] [INPUT Bin File] [Bit Endian Type] [Start Address] ... [OUTPUT Hex File] [INPUT Bin File] [Bit Endian Type] [Start Address]
+		- GRIFFIN : DSP type
+		- OUTPUT Hex File : converted by bit endian, added checksum (with tag)
+		- INPUT Bin File : sound source
+		- Bit Endian Type : -8BE, -8LE, -16BE, -16LE
+		- Start Address : flash address
+
+		(ex.)
+		ASD TXT UserVer.hex ~Tuning_Ver.h -COSTUM 406000
+		ASD MOBIS UserGain.hex ~Tuning_Gain.h -COSTUM 407000
+		ASD ELVIS S1.BL.hex S1.BL.inputFile.48k.1s.bin -16BE 300000 S1.LL.hex S1.LL.inputFile.48k.1s.bin -16BE 318000
+
+
+Notice #001:
+============
+
+	COMMAND : "OPTION EXT"
+	
+	Syntax error occurs when using one digit after 0x in the input file as shown below.
+	
+	0x0, // 12 Reserved VolStep
+	0x1, // 13 Reserved VolStep
+	0xA, // 14 Reserved VolStep
+	...
+	
+	If possible, even if it is a single digit, write it in two digits.
+	
+	0x00, // 12 Reserved VolStep
+	0x01, // 13 Reserved VolStep
+	0x0A, // 14 Reserved VolStep
+	...
+
+
+Notice #002:
+============
+
+	COMMAND : "OPTION EXT"
+	
+	When creating an input file, use one line with a maximum of less than 1kB.
+
+
+Notice #003:
+============
+
+	COMMAND : "ASD MOBIS"
+
+	When creating an input file, do NOT use Multi-Line Comments (informally, C style), start with /* and end with */.
+

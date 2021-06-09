@@ -1,0 +1,117 @@
+// Copyright (c) 2016-2018 Analog Devices Inc.  All rights reserved.
+
+$LIBRARIES = libc.dlb, libcc.dlb, libssl.dlb, libosal_noos.dlb;
+
+$OBJECTS = $COMMAND_LINE_OBJECTS;
+
+$OBJS_LIBS = $OBJECTS, $LIBRARIES;
+
+MEMORY
+{
+  // Only require block 0.
+  mem_block0_bw    { TYPE(BW RAM) START(0x002403f0) END(0x0026ffff) WIDTH(8)  }
+}
+  
+PROCESSOR 2156x_CORE0_SHARC0
+{
+  
+  OUTPUT( $COMMAND_LINE_OUTPUT_FILE )
+ 
+  KEEP( initcode. )   // linker must not delete initcode()
+  
+  // The elfloader utility uses the ELF entry address as the initcode 
+  // start address by default.
+  ENTRY( initcode. )
+      
+  OUTPUT($COMMAND_LINE_OUTPUT_FILE)
+
+  SECTIONS
+  {
+
+    // Set the LDF symbol values that cause the DM, PM and Instruction
+    // caches to be disabled.
+    ___ldf_dmcachesize = 0xffffffff;
+    ___ldf_pmcachesize = 0xffffffff;
+    ___ldf_icachesize = 0xffffffff;
+  
+    ///////////////////////////////////////////////////////////////////////////
+    // Instructions.
+    ///////////////////////////////////////////////////////////////////////////
+    
+    dxe_block0_sw_code SW
+    {
+      // VISA code.
+      INPUT_SECTION_ALIGN(2)
+      FILL(0x1)  // fill gaps in memory with NOPs
+      INPUT_SECTIONS( $OBJS_LIBS(seg_int_code_sw seg_int_code seg_swco seg_pmco) )
+    } > mem_block0_bw
+
+    dxe_block0_nw_code PM
+    {
+      // ISA code.
+      INPUT_SECTION_ALIGN(2)
+      INPUT_SECTIONS( $OBJS_LIBS(seg_int_code seg_init seg_pmco) )
+    } > mem_block0_bw
+
+    ///////////////////////////////////////////////////////////////////////////
+    // General data.
+    ///////////////////////////////////////////////////////////////////////////
+
+    dxe_block0_data_bw BW
+    {
+      INPUT_SECTION_ALIGN(4)
+      INPUT_SECTIONS( $OBJS_LIBS(seg_dmda_bw seg_dmda) )
+    } > mem_block0_bw
+
+    dxe_block0_data DM
+    {
+      INPUT_SECTIONS( $OBJS_LIBS(seg_dmda_nw seg_dmda) )
+    } > mem_block0_bw
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Zero initialized data.
+    ///////////////////////////////////////////////////////////////////////////
+    dxe_block0_bsz_bw ZERO_INIT BW
+    {
+      INPUT_SECTION_ALIGN(4)
+      INPUT_SECTIONS( $OBJS_LIBS(seg_bsz_data .bss8 .bss) )
+    } > mem_block0_bw
+
+    dxe_block0_bsz ZERO_INIT DM
+    {
+      INPUT_SECTIONS( $OBJS_LIBS(seg_bsz_data .bss32 .bss) )
+    } > mem_block0_bw
+
+    ///////////////////////////////////////////////////////////////////////////
+    //  Non-initialized data.
+    ///////////////////////////////////////////////////////////////////////////
+
+    dxe_block0_noinit_bw NO_INIT BW
+    {
+      INPUT_SECTION_ALIGN(4)
+      INPUT_SECTIONS( $OBJS_LIBS(seg_noinit_data) )
+    } > mem_block0_bw
+    
+    dxe_block0_noinit NO_INIT DM
+    {
+      INPUT_SECTIONS( $OBJS_LIBS(seg_noinit_data) )
+    } > mem_block0_bw
+
+    ///////////////////////////////////////////////////////////////////////////  
+    // PM data.
+    ///////////////////////////////////////////////////////////////////////////
+
+    dxe_block0_pm_data PM 32
+    {
+      INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_nw seg_pmda) )
+    } > mem_block0_bw
+
+    dxe_block0_pm_data_bw BW
+    {
+      INPUT_SECTION_ALIGN(4)
+      INPUT_SECTIONS( $OBJS_LIBS(seg_pmda_bw seg_pmda) )
+    } > mem_block0_bw
+
+  }  // SECTIONS
+  
+} // PROCESSOR

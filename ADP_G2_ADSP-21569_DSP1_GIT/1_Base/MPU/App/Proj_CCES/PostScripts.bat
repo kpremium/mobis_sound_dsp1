@@ -1,0 +1,1 @@
+%~dp0..\..\..\Utility\InstallScript\DspMergeTool\DspMergeTool_1.2.9.exe REBUILD %~dp0%2\%1.ldr %~dp0%2\~%1.ldr

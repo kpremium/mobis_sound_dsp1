@@ -1,0 +1,105 @@
+/*
+** SigmaStudio for Griffin application linker description file for GMAP
+*/
+
+
+/* Default for SSn code */
+SS4G_block0
+{
+   RESERVE(_Block0_L1_space, _Block0_L1_space_length = 2, 2)
+   RESERVE_EXPAND(_Block0_L1_space, _Block0_L1_space_length, 0, 2)
+} > mem_SS4G_block0_bw
+
+/* Default for SSn data */
+SS4G_block1
+{
+   RESERVE(_Block1_L1_space, _Block1_L1_space_length = 2, 2)
+   RESERVE_EXPAND(_Block1_L1_space, _Block1_L1_space_length, 0, 2)
+} > mem_SS4G_block1_bw
+
+/* Default for SSn parameter */
+SS4G_block2
+{
+   RESERVE(_Block2_L1_space, _Block2_L1_space_length = 8, 8)
+   RESERVE_EXPAND(_Block2_L1_space, _Block2_L1_space_length, 0, 8)
+} > mem_SS4G_block2_bw
+
+/* Default for SSn data B and extended precision */
+SS4G_block3
+{
+   RESERVE(_Block3_L1_space, _Block3_L1_space_length = 2, 2)
+   RESERVE_EXPAND(_Block3_L1_space, _Block3_L1_space_length, 0, 2)
+} > mem_SS4G_block3_bw
+
+#if defined(MY_SDRAM_SWCODE_MEM)
+/* Default for SSn code B */
+SS4G_L3_Code
+{
+   RESERVE(_Block_L3_code_space, _Block_L3_code_space_length = 2, 2)
+   RESERVE_EXPAND(_Block_L3_code_space, _Block_L3_code_space_length, 0, 2)
+} > MY_SDRAM_SWCODE_MEM
+#else
+/* Default for SSn code B */
+SS4G_L2_Code
+{
+   RESERVE(_Block_L3_code_space, _Block_L3_code_space_length = 256, 256)
+} > mem_SS4G_L2_bw
+#endif
+
+#if defined(MY_SDRAM_DATA1_MEM)
+/* Default for SSn data C */
+SS4G_L3_Data
+{
+   RESERVE(_Block_L3_data_space, _Block_L3_data_space_length = 8, 8)
+   RESERVE_EXPAND(_Block_L3_data_space, _Block_L3_data_space_length, 0, 8)
+} > MY_SDRAM_DATA1_MEM
+#else
+/* Default for SSn data C */
+SS4G_L2_Data1
+{
+   RESERVE(_Block_L3_data_space, _Block_L3_data_space_length = 256, 256)
+} > mem_SS4G_L2_bw
+#endif
+
+/* Default for SSn L2 data for buffer sharing */
+/* This is allocated from the cached portion of L2 */
+SS4G_L2_Data
+{
+   RESERVE(_Block_L2_data_space, _Block_L2_data_space_length = 16384, 16384)
+} > mem_SS4G_L2_bw
+
+/* Sections for inter core handshaking */
+/* This is allocated from the uncached portion of L2 for core 1 (SHARC 0) */
+#if !defined(__ADSP2156x__)
+#if defined(__ADSPSC5xx__)
+SS4G_L2_Core0_Handshake BW
+{
+   INPUT_SECTIONS($OBJS_LIBS(ss4g_l2_core0_handshake) )
+} > mem_L2B1P2_bw
+
+/* This is allocated from the uncached portion of L2 for core 1 (SHARC 0) */
+SS4G_L2_Core1_Handshake BW
+{
+   INPUT_SECTIONS($OBJS_LIBS(ss4g_l2_core1_handshake) )
+} > mem_L2B1P4_bw
+
+/* This is allocated from the uncached portion of L2 for core 2 (SHARC 1) */
+SS4G_L2_Core2_Handshake BW
+{
+   INPUT_SECTIONS($OBJS_LIBS(ss4g_l2_core2_handshake) )
+} > mem_L2B1P3_bw
+#elif defined(__ADSP215xx__) && (__NUM_ARM_CORES__==0)
+/* This is allocated from the uncached portion of L2 for core 1 (SHARC 0) */
+SS4G_L2_Core1_Handshake BW
+{
+   INPUT_SECTIONS($OBJS_LIBS(ss4g_l2_core1_handshake) )
+} > mem_L2B1P2_bw
+
+/* This is allocated from the uncached portion of L2 for core 2 (SHARC 1) */
+SS4G_L2_Core2_Handshake BW
+{
+   INPUT_SECTIONS($OBJS_LIBS(ss4g_l2_core2_handshake) )
+} > mem_L2B1P3_bw
+#endif
+#endif
+

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<root>
+	<installedComponents>
+		<component id="com.analog.crosscore.ssldd.pinmux.component" name="Pin Multiplexing" version="1.0.0" visible="true">
+			<component-description><![CDATA[Since some processors have more peripherals than physical pins on the chip, the user needs to configure which peripherals they want enabled and onto which set of pins.  Peripheral configuration requires an in-depth understanding of the hardware.  This component makes it easier to program the peripherals without worrying about the internal details.  The user simply selects the peripherals to enable and this component will generate the C code necessary to configure the peripherals.]]></component-description>
+			<product name="Pin Multiplexing Product" version="1.0.0"/>
+		</component>
+	</installedComponents>
+	<configurations>
+		<configuration id="com.analog.crosscore.ssldd.pinmux.component">
+			<pinmux-configuration processor="ADSP-21569" version="1.0">
+				<peripheral description="Link Port" name="LP1">
+					<signal bit="4" mux="2" name="ACK" pin="2" port="B"/>
+					<signal bit="14" mux="0" name="CLK" pin="7" port="C"/>
+					<signal bit="30" mux="0" name="D0" pin="15" port="B"/>
+					<signal bit="0" mux="0" name="D1" pin="0" port="C"/>
+					<signal bit="2" mux="0" name="D2" pin="1" port="C"/>
+					<signal bit="4" mux="0" name="D3" pin="2" port="C"/>
+					<signal bit="6" mux="0" name="D4" pin="3" port="C"/>
+					<signal bit="8" mux="0" name="D5" pin="4" port="C"/>
+					<signal bit="10" mux="0" name="D6" pin="5" port="C"/>
+					<signal bit="12" mux="0" name="D7" pin="6" port="C"/>
+				</peripheral>
+				<peripheral description="Serial Peripheral Interface" name="SPI0">
+					<signal bit="12" mux="0" name="CLK" pin="6" port="A"/>
+					<signal bit="14" mux="0" name="MISO" pin="7" port="A"/>
+					<signal bit="16" mux="0" name="MOSI" pin="8" port="A"/>
+					<signal bit="18" mux="0" name="SEL1" pin="9" port="A"/>
+				</peripheral>
+				<peripheral description="Serial Peripheral Interface" name="SPI1">
+					<signal bit="20" mux="1" name="CLK" pin="10" port="A"/>
+					<signal bit="22" mux="1" name="MISO" pin="11" port="A"/>
+					<signal bit="24" mux="1" name="MOSI" pin="12" port="A"/>
+					<signal bit="26" mux="1" name="SEL1" pin="13" port="A"/>
+				</peripheral>
+				<peripheral description="Serial Peripheral Interface" name="SPI2">
+					<signal bit="8" mux="0" name="CLK" pin="4" port="A"/>
+					<signal bit="4" mux="0" name="D2" pin="2" port="A"/>
+					<signal bit="6" mux="0" name="D3" pin="3" port="A"/>
+					<signal bit="0" mux="0" name="MISO" pin="0" port="A"/>
+					<signal bit="2" mux="0" name="MOSI" pin="1" port="A"/>
+					<signal bit="10" mux="0" name="SEL1" pin="5" port="A"/>
+				</peripheral>
+				<peripheral description="UART" name="UART1">
+					<signal bit="28" mux="2" name="RX" pin="14" port="A"/>
+					<signal bit="30" mux="2" name="TX" pin="15" port="A"/>
+				</peripheral>
+				<peripheral description="UART" name="UART2">
+					<signal bit="22" mux="3" name="RX" pin="11" port="B"/>
+					<signal bit="24" mux="3" name="TX" pin="12" port="B"/>
+				</peripheral>
+				<gpio name="Port A">
+					<signal bit="0" name="PA00" pin="0" port="A"/>
+					<signal bit="2" name="PA01" pin="1" port="A"/>
+					<signal bit="4" name="PA02" pin="2" port="A"/>
+					<signal bit="6" name="PA03" pin="3" port="A"/>
+					<signal bit="8" name="PA04" pin="4" port="A"/>
+					<signal bit="10" name="PA05" pin="5" port="A"/>
+					<signal bit="12" name="PA06" pin="6" port="A"/>
+					<signal bit="14" name="PA07" pin="7" port="A"/>
+					<signal bit="16" name="PA08" pin="8" port="A"/>
+					<signal bit="18" name="PA09" pin="9" port="A"/>
+					<signal bit="20" name="PA10" pin="10" port="A"/>
+					<signal bit="22" name="PA11" pin="11" port="A"/>
+					<signal bit="24" name="PA12" pin="12" port="A"/>
+					<signal bit="26" name="PA13" pin="13" port="A"/>
+					<signal bit="28" name="PA14" pin="14" port="A"/>
+					<signal bit="30" name="PA15" pin="15" port="A"/>
+				</gpio>
+				<gpio name="Port B">
+					<signal bit="4" name="PB02" pin="2" port="B"/>
+					<signal bit="22" name="PB11" pin="11" port="B"/>
+					<signal bit="24" name="PB12" pin="12" port="B"/>
+					<signal bit="30" name="PB15" pin="15" port="B"/>
+				</gpio>
+				<gpio name="Port C">
+					<signal bit="0" name="PC00" pin="0" port="C"/>
+					<signal bit="2" name="PC01" pin="1" port="C"/>
+					<signal bit="4" name="PC02" pin="2" port="C"/>
+					<signal bit="6" name="PC03" pin="3" port="C"/>
+					<signal bit="8" name="PC04" pin="4" port="C"/>
+					<signal bit="10" name="PC05" pin="5" port="C"/>
+					<signal bit="12" name="PC06" pin="6" port="C"/>
+					<signal bit="14" name="PC07" pin="7" port="C"/>
+				</gpio>
+			</pinmux-configuration>
+		</configuration>
+	</configurations>
+</root>

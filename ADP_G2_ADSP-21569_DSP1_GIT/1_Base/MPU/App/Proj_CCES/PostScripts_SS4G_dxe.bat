@@ -1,0 +1,1 @@
+copy %~dp0%2\%1.dxe %~dp0..\..\Schematic\ADP_G2_DSP1_Sounder.dxe
