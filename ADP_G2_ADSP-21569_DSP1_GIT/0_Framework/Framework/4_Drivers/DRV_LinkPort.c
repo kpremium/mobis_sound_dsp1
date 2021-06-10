@@ -7,11 +7,11 @@
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fBlock_IP_LP[NUM_ANCASD_SAMPLES*NUM_IP_CHANNELS_DSP*3];
+float32_t fBlock_IP_LP[AP_IPC_BLKSIZ*AP_IPC_I_CH*3];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fBlock_OP_LP[NUM_ANCASD_SAMPLES*NUM_OP_CHANNELS_DSP*3];
+float32_t fBlock_OP_LP[AP_IPC_BLKSIZ*AP_IPC_O_CH*3];
 
 void config_LP0(uint32_t dir)
 {
@@ -84,11 +84,11 @@ void config_LP1_DMA(uint32_t dir, uint32_t *buff, uint32_t xcount, uint32_t xmod
 void InitLPBuffer(void)
 {
 	uint32_t iSample, iChannel;
-	for(iChannel=0; iChannel<NUM_OP_CHANNELS_DSP*3; iChannel++)
+	for(iChannel=0; iChannel<AP_IPC_O_CH*3; iChannel++)
 	{
-		for(iSample=0;iSample<NUM_ANCASD_SAMPLES;iSample++)
+		for(iSample=0;iSample<AP_IPC_BLKSIZ;iSample++)
 		{
-			fBlock_OP_LP[NUM_ANCASD_SAMPLES*iChannel + iSample] = (float32_t)iSample;
+			fBlock_OP_LP[AP_IPC_BLKSIZ*iChannel + iSample] = (float32_t)iSample;
 		}
 	}
 }
@@ -97,7 +97,7 @@ void InitLinkPort0Rx(void)
 {
 	config_LP0(DEF_LP_RX);
 	InitINTR_LinkPort();
-	config_LP0_DMA(DEF_LP_RX, (uint32_t *)fBlock_IP_LP, NUM_ANCASD_SAMPLES*NUM_OP_CHANNELS_DSP*3, 4, 0, 0);
+	config_LP0_DMA(DEF_LP_RX, (uint32_t *)fBlock_IP_LP, AP_IPC_BLKSIZ*AP_IPC_O_CH*3, 4, 0, 0);
 	enableLP0();
 }
 
@@ -106,7 +106,7 @@ void InitLinkPort0Tx(void)
 	InitLPBuffer();
 	config_LP0(DEF_LP_TX);
 	InitINTR_LinkPort();
-	config_LP0_DMA(DEF_LP_TX, (uint32_t *)fBlock_OP_LP, NUM_ANCASD_SAMPLES*NUM_OP_CHANNELS_DSP*3, 4, 0, 0);
+	config_LP0_DMA(DEF_LP_TX, (uint32_t *)fBlock_OP_LP, AP_IPC_BLKSIZ*AP_IPC_O_CH*3, 4, 0, 0);
 	enableLP0();
 }
 
@@ -114,7 +114,7 @@ void InitLinkPort1Rx(void)
 {
 	config_LP1(DEF_LP_RX);
 	InitINTR_LinkPort();
-	config_LP1_DMA(DEF_LP_RX, (uint32_t *)fBlock_IP_LP, NUM_ANCASD_SAMPLES*NUM_OP_CHANNELS_DSP*3, 4, 0, 0);
+	config_LP1_DMA(DEF_LP_RX, (uint32_t *)fBlock_IP_LP, AP_IPC_BLKSIZ*AP_IPC_O_CH*3, 4, 0, 0);
 	enableLP1();
 }
 
@@ -123,13 +123,13 @@ void InitLinkPort1Tx(void)
 	InitLPBuffer();
 	config_LP1(DEF_LP_TX);
 	InitINTR_LinkPort();
-	config_LP1_DMA(DEF_LP_TX, (uint32_t *)fBlock_OP_LP, NUM_ANCASD_SAMPLES*NUM_OP_CHANNELS_DSP*3, 4, 0, 0);
+	config_LP1_DMA(DEF_LP_TX, (uint32_t *)fBlock_OP_LP, AP_IPC_BLKSIZ*AP_IPC_O_CH*3, 4, 0, 0);
 	enableLP1();
 }
 
 void WriteDatatoDSP_LP1(void)
 {
-	config_LP1_DMA(DEF_LP_TX, (uint32_t *)fBlock_OP_LP, NUM_ANCASD_SAMPLES*NUM_OP_CHANNELS_DSP*3, 4, 0, 0);
+	config_LP1_DMA(DEF_LP_TX, (uint32_t *)fBlock_OP_LP, AP_IPC_BLKSIZ*AP_IPC_O_CH*3, 4, 0, 0);
 }
 
 void ISR_Linkport0(unsigned int id, void* arg)

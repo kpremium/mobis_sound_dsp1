@@ -2,12 +2,12 @@
 #include "DRV_FLASH.h"
 #include "Variation_MASD.h"
 
-extern float32_t fAP_AMP_I_Buf[NUM_IP_CHANNELS_A2B][NUM_A2B_SAMPLES];
-extern float32_t fAP_AMP_O_Buf[NUM_OP_CHANNELS_A2B][NUM_A2B_SAMPLES];
-extern float32_t fAP_CAMPO_Buf[NUM_OP_CHANNELS_CAMPING][NUM_A2B_SAMPLES];
-extern float32_t fAP_CAMPI_Buf[NUM_IP_CHANNELS_CAMPING][NUM_A2B_SAMPLES];
-extern float32_t fAP_VESSO_Buf[NUM_OP_CHANNELS_VESS][NUM_A2B_SAMPLES];
-extern float32_t fAP_IPC_O_Buf[NUM_OP_CHANNELS_DSP][NUM_A2B_SAMPLES];
+extern float32_t fAP_AMP_I_Buf[AP_AMP_I_CH][AP_A2B_BLKSIZ];
+extern float32_t fAP_AMP_O_Buf[AP_AMP_O_CH][AP_A2B_BLKSIZ];
+extern float32_t fAP_CAMPO_Buf[AP_CAM_O_CH][AP_A2B_BLKSIZ];
+extern float32_t fAP_CAMPI_Buf[AP_CAM_I_CH][AP_A2B_BLKSIZ];
+extern float32_t fAP_VESSO_Buf[AP_VES_O_CH][AP_A2B_BLKSIZ];
+extern float32_t fAP_IPC_O_Buf[AP_IPC_O_CH][AP_A2B_BLKSIZ];
 
 #if defined(USE_SS4SH)
 
@@ -137,7 +137,7 @@ ST_MIPS_INFO oMipsInfoSSn1 =
 	.fAvgMips = 0,
 	.fMaxCycles = 0,
 	.fMaxMips = 0,
-	.fMipsConst = (1.0f / (float32_t)(NUM_ANCASD_SAMPLES) * (float32_t)(SAMPLING_RATE_96) / 1000000.0f),
+	.fMipsConst = (1.0f / (float32_t)(AP_IPC_BLKSIZ) * (float32_t)(SAMPLING_RATE_96) / 1000000.0f),
 };
 
 ST_MIPS_INFO oMipsInfoSSn2 =
@@ -146,7 +146,7 @@ ST_MIPS_INFO oMipsInfoSSn2 =
 	.fAvgMips = 0,
 	.fMaxCycles = 0,
 	.fMaxMips = 0,
-	.fMipsConst = (1.0f / (float32_t)(NUM_A2B_SAMPLES) * (float32_t)(SAMPLING_RATE_48) / 1000000.0f),
+	.fMipsConst = (1.0f / (float32_t)(AP_A2B_BLKSIZ) * (float32_t)(SAMPLING_RATE_48) / 1000000.0f),
 };
 #endif
 
@@ -903,21 +903,21 @@ int ProcSS4SH_SSn1(void)
 
 #if (USE_DSP_CFG == 0u)
 	/* Up-Sampling, Output to AMP A2B */
-	for(iChannel=0; iChannel<(NUM_OP_CHANNELS_A2B>>1); iChannel++)
+	for(iChannel=0; iChannel<(AP_AMP_O_CH>>1); iChannel++)
 	{
 		for(iSample=0; iSample<NUM_SSn1_BLOCK_SAMPLES; iSample++)
 		{
-			fAP_AMP_O_Buf[iChannel+(NUM_OP_CHANNELS_A2B>>1)][iSample] = fAP_AMP_O_Buf[iChannel][iSample];
+			fAP_AMP_O_Buf[iChannel+(AP_AMP_O_CH>>1)][iSample] = fAP_AMP_O_Buf[iChannel][iSample];
 		}
 	}
 #elif (USE_DSP_CFG == 1u)
 	/* Up-Sampling, Output to DSP2 */
-	for(iChannel=0; iChannel<(NUM_OP_CHANNELS_DSP>>1); iChannel++)
+	for(iChannel=0; iChannel<(AP_IPC_O_CH>>1); iChannel++)
 	{
 		for(iSample=0; iSample<NUM_SSn1_BLOCK_SAMPLES; iSample++)
 		{
 			fAP_IPC_O_Buf[iChannel][iSample] = fAP_AMP_O_Buf[iChannel][iSample];
-			fAP_IPC_O_Buf[iChannel+(NUM_OP_CHANNELS_DSP>>1)][iSample] = fAP_AMP_O_Buf[iChannel][iSample];
+			fAP_IPC_O_Buf[iChannel+(AP_IPC_O_CH>>1)][iSample] = fAP_AMP_O_Buf[iChannel][iSample];
 		}
 	}
 #endif

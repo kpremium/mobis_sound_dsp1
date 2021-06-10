@@ -14,7 +14,7 @@ ST_MIPS_INFO oMipsInfoAP_uL =
 	.fAvgMips = 0,
 	.fMaxCycles = 0,
 	.fMaxMips = 0,
-	.fMipsConst = (1.0f / (float32_t)(NUM_ANCASD_SAMPLES) * (float32_t)(SAMPLING_RATE_96) / 1000000.0f),
+	.fMipsConst = (1.0f / (float32_t)(AP_IPC_BLKSIZ) * (float32_t)(SAMPLING_RATE_96) / 1000000.0f),
 };
 
 ST_MIPS_INFO oMipsInfoAP_uS =
@@ -23,7 +23,7 @@ ST_MIPS_INFO oMipsInfoAP_uS =
 	.fAvgMips = 0,
 	.fMaxCycles = 0,
 	.fMaxMips = 0,
-	.fMipsConst = (1.0f / (float32_t)(NUM_A2B_SAMPLES) * (float32_t)(SAMPLING_RATE_48) / 1000000.0f),
+	.fMipsConst = (1.0f / (float32_t)(AP_A2B_BLKSIZ) * (float32_t)(SAMPLING_RATE_48) / 1000000.0f),
 };
 #endif
 
@@ -39,47 +39,47 @@ volatile uint8_t gbBlockedAP = 0;
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_ASD_I_Buf[NUM_IP_CHANNELS_ANCASD][NUM_ANCASD_SAMPLES];
+float32_t fAP_ASD_I_Buf[AP_ASD_I_CH][AP_IPC_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_ASD_O_Buf[NUM_OP_CHANNELS_ANCASD][NUM_ANCASD_SAMPLES];
+float32_t fAP_ASD_O_Buf[AP_ASD_O_CH][AP_IPC_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_AMP_I_Buf[NUM_IP_CHANNELS_A2B][NUM_A2B_SAMPLES];
+float32_t fAP_AMP_I_Buf[AP_AMP_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_AMP_O_Buf[NUM_OP_CHANNELS_A2B][NUM_A2B_SAMPLES];
+float32_t fAP_AMP_O_Buf[AP_AMP_O_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_ACC_I_Buf[NUM_IP_CHANNELS_ACC1][NUM_A2B_SAMPLES];
+float32_t fAP_ACC_I_Buf[AP_ACC_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_MIC_I_Buf[NUM_IP_CHANNELS_PMIC][NUM_A2B_SAMPLES];
+float32_t fAP_MIC_I_Buf[AP_MIC_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_IPC_I_Buf[NUM_IP_CHANNELS_DSP][NUM_A2B_SAMPLES];
+float32_t fAP_IPC_I_Buf[AP_IPC_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_IPC_O_Buf[NUM_OP_CHANNELS_DSP][NUM_A2B_SAMPLES];
+float32_t fAP_IPC_O_Buf[AP_IPC_O_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_VESSO_Buf[NUM_OP_CHANNELS_VESS][NUM_A2B_SAMPLES];
+float32_t fAP_VESSO_Buf[AP_VES_O_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_CAMPI_Buf[NUM_IP_CHANNELS_CAMPING][NUM_A2B_SAMPLES];
+float32_t fAP_CAMPI_Buf[AP_CAM_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-float32_t fAP_CAMPO_Buf[NUM_OP_CHANNELS_CAMPING][NUM_A2B_SAMPLES];
+float32_t fAP_CAMPO_Buf[AP_CAM_O_CH][AP_A2B_BLKSIZ];
 
 
 /*******************************/
@@ -88,39 +88,39 @@ float32_t fAP_CAMPO_Buf[NUM_OP_CHANNELS_CAMPING][NUM_A2B_SAMPLES];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-uint32_t sPDMA_AMP__I_Buf[NUM_IN_OUT_BLOCKS][NUM_IP_CHANNELS_A2B][NUM_A2B_SAMPLES];
+uint32_t sPDMA_AMP__I_Buf[PINGPONG_BUF][AP_AMP_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-uint32_t sPDMA_AMP__O_Buf[NUM_IN_OUT_BLOCKS][NUM_OP_CHANNELS_A2B][NUM_A2B_SAMPLES];
+uint32_t sPDMA_AMP__O_Buf[PINGPONG_BUF][AP_AMP_O_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-uint32_t sPDMA_ACC1_I_Buf[NUM_IN_OUT_BLOCKS][NUM_IP_CHANNELS_ACC1][NUM_A2B_SAMPLES];
+uint32_t sPDMA_ACC1_I_Buf[PINGPONG_BUF][AP_ACC_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-uint32_t sPDMA_PMIC_I_Buf[NUM_IN_OUT_BLOCKS][NUM_IP_CHANNELS_PMIC][NUM_A2B_SAMPLES];
+uint32_t sPDMA_PMIC_I_Buf[PINGPONG_BUF][AP_MIC_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-uint32_t sPDMA_IPC__I_Buf[NUM_IN_OUT_BLOCKS][NUM_IP_CHANNELS_DSP][NUM_A2B_SAMPLES];
+uint32_t sPDMA_IPC__I_Buf[PINGPONG_BUF][AP_IPC_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-uint32_t sPDMA_IPC__O_Buf[NUM_IN_OUT_BLOCKS][NUM_OP_CHANNELS_DSP][NUM_A2B_SAMPLES];
+uint32_t sPDMA_IPC__O_Buf[PINGPONG_BUF][AP_IPC_O_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-uint32_t sPDMA_VESS_O_Buf[NUM_IN_OUT_BLOCKS][NUM_OP_CHANNELS_VESS][NUM_A2B_SAMPLES];
+uint32_t sPDMA_VESS_O_Buf[PINGPONG_BUF][AP_VES_O_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-uint32_t sPDMA_CAMP_I_Buf[NUM_IN_OUT_BLOCKS][NUM_IP_CHANNELS_CAMPING][NUM_A2B_SAMPLES];
+uint32_t sPDMA_CAMP_I_Buf[PINGPONG_BUF][AP_CAM_I_CH][AP_A2B_BLKSIZ];
 
 #pragma align 8
 #pragma section("seg_l1_block1")
-uint32_t sPDMA_CAMP_O_Buf[NUM_IN_OUT_BLOCKS][NUM_OP_CHANNELS_CAMPING][NUM_A2B_SAMPLES];
+uint32_t sPDMA_CAMP_O_Buf[PINGPONG_BUF][AP_CAM_O_CH][AP_A2B_BLKSIZ];
 
 
 
@@ -298,9 +298,9 @@ void ProcSPORT_uL(void)
 	int32_t iSample = 0;
 
 #ifndef USE_SS4SH
-	for(iChannel =0; iChannel <NUM_IP_CHANNELS_A2B;iChannel++)
+	for(iChannel =0; iChannel <AP_AMP_I_CH;iChannel++)
 	{
-		for(iSample =0; iSample <NUM_A2B_SAMPLES; iSample++)
+		for(iSample =0; iSample <AP_A2B_BLKSIZ; iSample++)
 		{
 #if (USE_DSP_CFG == 0u)
 			fAP_AMP_O_Buf[iChannel][iSample] = fAP_AMP_I_Buf[iChannel][iSample];
@@ -319,9 +319,9 @@ void ProcSPORT_uS(void)
 
 #ifndef USE_SS4SH
 
-	for(iChannel =0; iChannel <NUM_OP_CHANNELS_VESS;iChannel++)
+	for(iChannel =0; iChannel <AP_VES_O_CH;iChannel++)
 	{
-		for(iSample =0; iSample <NUM_A2B_SAMPLES; iSample++)
+		for(iSample =0; iSample <AP_A2B_BLKSIZ; iSample++)
 		{
 			fAP_VESSO_Buf[iChannel][iSample] = fAP_CAMPI_Buf[iChannel][iSample];
 		}
@@ -341,10 +341,10 @@ void ReadInputDataFromAMP(void)
 	else
 		Pipo_I_AMP = 1;
 
-	for(iChannel=0; iChannel<NUM_IP_CHANNELS_A2B; iChannel++)
+	for(iChannel=0; iChannel<AP_AMP_I_CH; iChannel++)
 	{
 		CopyFix2Float(&sPDMA_AMP__I_Buf[Pipo_I_AMP][iChannel][0], \
-						&fAP_AMP_I_Buf[iChannel][0], NUM_A2B_SAMPLES, 0);
+						&fAP_AMP_I_Buf[iChannel][0], AP_A2B_BLKSIZ, 0);
 	}
 }
 
@@ -359,10 +359,10 @@ void WriteOutputDataToAMP(void)
 	else
 		Pipo_O_AMP = 1;
 
-	for(iChannel=0; iChannel<NUM_OP_CHANNELS_A2B; iChannel++)
+	for(iChannel=0; iChannel<AP_AMP_O_CH; iChannel++)
 	{
 		CopyFloat2Fix(&fAP_AMP_O_Buf[iChannel][0], \
-						&sPDMA_AMP__O_Buf[Pipo_O_AMP][iChannel][0], NUM_A2B_SAMPLES, 0);
+						&sPDMA_AMP__O_Buf[Pipo_O_AMP][iChannel][0], AP_A2B_BLKSIZ, 0);
 	}
 }
 
@@ -377,10 +377,10 @@ void ReadInputDataFromDSP(void)
 	else
 		Pipo_I_DSP = 1;
 
-	for(iChannel=0; iChannel<NUM_IP_CHANNELS_DSP; iChannel++)
+	for(iChannel=0; iChannel<AP_IPC_I_CH; iChannel++)
 	{
 		CopyFix2Float(&sPDMA_IPC__I_Buf[Pipo_I_DSP][iChannel][0], \
-						&fAP_IPC_I_Buf[iChannel][0], NUM_A2B_SAMPLES, 0);
+						&fAP_IPC_I_Buf[iChannel][0], AP_A2B_BLKSIZ, 0);
 	}
 }
 
@@ -395,10 +395,10 @@ void WriteOutputDataToDSP(void)
 	else
 		Pipo_O_DSP = 1;
 
-	for(iChannel=0; iChannel<NUM_OP_CHANNELS_DSP; iChannel++)
+	for(iChannel=0; iChannel<AP_IPC_O_CH; iChannel++)
 	{
 		CopyFloat2Fix(&fAP_IPC_O_Buf[iChannel][0], \
-						&sPDMA_IPC__O_Buf[Pipo_O_DSP][iChannel][0], NUM_A2B_SAMPLES, 0);
+						&sPDMA_IPC__O_Buf[Pipo_O_DSP][iChannel][0], AP_A2B_BLKSIZ, 0);
 	}
 }
 
@@ -413,10 +413,10 @@ void ReadInputDataFromACC1(void)
 	else
 		Pipo_I_ACC1 = 1;
 
-	for(iChannel=0; iChannel<NUM_IP_CHANNELS_ACC1; iChannel++)
+	for(iChannel=0; iChannel<AP_ACC_I_CH; iChannel++)
 	{
 		CopyFix2Float(&sPDMA_ACC1_I_Buf[Pipo_I_ACC1][iChannel][0], \
-						&fAP_ACC_I_Buf[iChannel][0], NUM_A2B_SAMPLES, 0);
+						&fAP_ACC_I_Buf[iChannel][0], AP_A2B_BLKSIZ, 0);
 	}
 }
 
@@ -431,10 +431,10 @@ void ReadInputDataFromPMIC(void)
 	else
 		Pipo_I_PMIC = 1;
 
-	for(iChannel=0; iChannel<NUM_IP_CHANNELS_PMIC; iChannel++)
+	for(iChannel=0; iChannel<AP_MIC_I_CH; iChannel++)
 	{
 		CopyFix2Float(&sPDMA_PMIC_I_Buf[Pipo_I_PMIC][iChannel][0], \
-						&fAP_MIC_I_Buf[iChannel][0], NUM_A2B_SAMPLES, 0);
+						&fAP_MIC_I_Buf[iChannel][0], AP_A2B_BLKSIZ, 0);
 	}
 }
 
@@ -449,10 +449,10 @@ void WriteOutputDataToASRC(void)
 	else
 		Pipo_O_CAMPING = 1;
 
-	for(iChannel=0; iChannel<NUM_OP_CHANNELS_CAMPING; iChannel++)
+	for(iChannel=0; iChannel<AP_CAM_O_CH; iChannel++)
 	{
 		CopyFloat2Fix(&fAP_CAMPO_Buf[iChannel][0], \
-						&sPDMA_CAMP_O_Buf[Pipo_O_CAMPING][iChannel][0], NUM_A2B_SAMPLES, 0);
+						&sPDMA_CAMP_O_Buf[Pipo_O_CAMPING][iChannel][0], AP_A2B_BLKSIZ, 0);
 	}
 }
 
@@ -467,10 +467,10 @@ void ReadInputDataFromASRC(void)
 	else
 		Pipo_I_CAMPING = 1;
 
-	for(iChannel=0; iChannel<NUM_IP_CHANNELS_CAMPING; iChannel++)
+	for(iChannel=0; iChannel<AP_CAM_I_CH; iChannel++)
 	{
 		CopyFix2Float(&sPDMA_CAMP_I_Buf[Pipo_I_CAMPING][iChannel][0], \
-						&fAP_CAMPI_Buf[iChannel][0], NUM_A2B_SAMPLES, 0);
+						&fAP_CAMPI_Buf[iChannel][0], AP_A2B_BLKSIZ, 0);
 	}
 }
 
@@ -485,10 +485,10 @@ void WriteOutputDataToVESS(void)
 	else
 		Pipo_O_VESS = 1;
 
-	for(iChannel=0; iChannel<NUM_OP_CHANNELS_VESS; iChannel++)
+	for(iChannel=0; iChannel<AP_VES_O_CH; iChannel++)
 	{
 		CopyFloat2Fix(&fAP_VESSO_Buf[iChannel][0], \
-						&sPDMA_VESS_O_Buf[Pipo_O_VESS][iChannel][0], NUM_A2B_SAMPLES, 0);
+						&sPDMA_VESS_O_Buf[Pipo_O_VESS][iChannel][0], AP_A2B_BLKSIZ, 0);
 	}
 }
 

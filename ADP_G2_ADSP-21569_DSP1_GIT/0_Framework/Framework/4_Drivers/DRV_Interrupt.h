@@ -12,10 +12,5 @@ void EnableINTR_UART_CAN(bool bEn);
 void InitINTR_UART_CAN(void);
 void InitINTR_LinkPort(void);
 
-void RegisterBackupA(void);
-void RegisterRecoveryA(void);
-void RegisterBackupB(void);
-void RegisterRecoveryB(void);
-
 
 #endif /* __DRV_INTERRUPT_H__ */

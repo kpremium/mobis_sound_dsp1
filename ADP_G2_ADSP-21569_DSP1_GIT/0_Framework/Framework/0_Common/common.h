@@ -45,7 +45,6 @@
 #define EZ_KIT_BOARD	(0u)
 #define TARGET_BOARD	(1u)
 #define USE_DSP_CFG		(1u)	// Output to AMP: 0, Output to DSP2: 1
-#define PINGPONG_BUF					(2)
 
 typedef struct _ST_MIPS_INFO
 {
