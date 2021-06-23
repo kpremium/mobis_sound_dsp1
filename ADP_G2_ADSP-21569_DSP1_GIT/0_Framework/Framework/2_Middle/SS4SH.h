@@ -42,8 +42,6 @@ extern ST_MIPS_INFO oMipsInfoSSn2;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void InitSS4SH(void);
-void DoneSS4SH(void);
-int ExecSS4SH(void);
 int ProcSS4SH_SSn1(void);
 int ProcSS4SH_SSn2(void);
 

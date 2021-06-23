@@ -3,7 +3,6 @@
 #define _COMMSUART_H_
 
 void InitCommsPkg(void);
-void DoneCommsPkg(void);
 void ExecCommsPkg(void);
 void ISR_CommsPkg_Rx(unsigned int id, void* arg);
 void ISR_CommsPkg_Tx(unsigned int id, void* arg);

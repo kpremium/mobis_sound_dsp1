@@ -14,7 +14,6 @@
 
 #include "Variation_MASD.h"
 
-static void InitINTR_SPI0(void);
 static void InitINTR_MDMA(void);
 static void InitINTR_SPORT(void);
 static void InitINTR_USER(void);
@@ -24,7 +23,6 @@ static void InitINTR_UART(void);
 
 uint32_t DRV_Interrupt_Init(void)
 {
-	//InitINTR_SPI0();
 	//InitINTR_MDMA();
 	InitINTR_SPORT();
 	InitINTR_USER();
@@ -58,21 +56,6 @@ void InitINTR_USER(void)
 	adi_int_InstallHandler(INTR_SYS_SOFT1_INT, (ADI_INT_HANDLER_PTR)MAIN_AudioProcessing_uS, 0, true);
 	//adi_int_InstallHandler(ADI_CID_SFT0I, (ADI_INT_HANDLER_PTR)ISR_AudioProcessing_uL, 0, true);
 	//adi_int_InstallHandler(ADI_CID_SFT1I, (ADI_INT_HANDLER_PTR)ISR_AudioProcessing_uS, 0, true);
-}
-
-void InitINTR_SPI0(void)
-{
-	/* SPI0 Interrupt Configuration */
-}
-
-void InitINTR_SPI1(void)
-{
-	/* SPI1 Interrupt Configuration */
-}
-
-void InitINTR_SPI2(void)
-{
-	/* SPI2 Interrupt Configuration */
 }
 
 void InitINTR_UART_CAN(void)
@@ -136,11 +119,6 @@ void EnableINTR_UART_TUN(bool bEn)
 #endif
 
 #endif
-}
-
-void InitINTR_GPIO(void)
-{
-	/* GPIO Interrupt Configuration */
 }
 
 void InitINTR_TMZ(void)

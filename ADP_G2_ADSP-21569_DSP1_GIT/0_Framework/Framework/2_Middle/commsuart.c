@@ -768,10 +768,6 @@ void InitCommsPkg(void)
 	InitINTR_UART_CAN();
 }
 
-void DoneCommsPkg(void)
-{
-}
-
 void ExecCommsPkg(void)
 {
 	// This function will be called within unlimited loop.

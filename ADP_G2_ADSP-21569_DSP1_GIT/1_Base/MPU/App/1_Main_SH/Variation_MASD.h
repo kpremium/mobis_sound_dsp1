@@ -7,6 +7,13 @@ extern ST_MIPS_INFO oMipsInfoAP_uL;
 extern ST_MIPS_INFO oMipsInfoAP_uS;
 #endif
 
+typedef enum
+{
+	ASRC_NUM0,
+	ASRC_NUM1,
+	ASRC_MAX
+}ASRCNum;
+
 #define SAMPLING_RATE_96                (96000)         // Audio Sampling Rate : 96kHz
 #define SAMPLING_RATE_48                (48000)         // Audio Sampling Rate : 48kHz
 
@@ -21,21 +28,20 @@ extern ST_MIPS_INFO oMipsInfoAP_uS;
 #define AP_VES_O_CH            (2)             // I2S SHARC for VESS Data Channels
 #define AP_CAM_I_CH            (2)             // Camping Scenario Data Channels
 #define AP_CAM_O_CH           (2)             // Camping Scenario Data Channels
-#define NUM_SPORT_SAMPLES               (32)            // Number of Samples for SPORT IO
-#define AP_IPC_BLKSIZ              (NUM_SPORT_SAMPLES)         // Number of Samples for ANCASD (3kHz cycles @ 96kHz sampling rate)
-#define AP_ASD_I_CH          (8)             // TDM SHARC for ANC/ASD Data Channels
-#define AP_ASD_O_CH         (8)             // TDM SHARC for ANC/ASD Data Channels
+#define AP_IPC_BLKSIZ          (32)         // Number of Samples for ANCASD (3kHz cycles @ 96kHz sampling rate)
+#define AP_ASD_I_CH            (8)             // TDM SHARC for ANC/ASD Data Channels
+#define AP_ASD_O_CH           (8)             // TDM SHARC for ANC/ASD Data Channels
+#define AP_SSN1_I_CH          (26)            // SSN I Channels
+#define AP_SSN1_O_CH         (10)            // SSN O Channels
+#define AP_SSN2_I_CH          (2)             // SSN I Channels
+#define AP_SSN2_O_CH         (2)             // SSN O Channels
 
 #define NUM_SSN                         (2)             // Number of SS4SH Schematic (*NEVER CHANGE*)
 #define NUM_SSn1_BLOCK_SAMPLES          (AP_A2B_BLKSIZ)           // Number of SSN 'A' Block Samples
 #define NUM_SSn2_BLOCK_SAMPLES          (AP_A2B_BLKSIZ)           // Number of SSN 'B' Block Samples
-#define NUM_IP_CHANNELS_SSn1            (26)            // SSN I Channels
-#define NUM_OP_CHANNELS_SSn1            (10)            // SSN O Channels
-#define NUM_IP_CHANNELS_SSn2            (2)             // SSN I Channels
-#define NUM_OP_CHANNELS_SSn2            (2)             // SSN O Channels
+
 
 uint32_t MAIN_AudioProcessingInit(void);
-void DoneAudioProcessing(void);
 void ExecAudioProcessing(void);
 void MAIN_AudioProcessing_uL(unsigned int id, void* arg);
 void MAIN_AudioProcessing_uS(unsigned int id, void* arg);
@@ -51,6 +57,8 @@ void WriteOutputDataToVESS(void);
 void ReadInputDataFromASRC(void);
 void WriteOutputDataToASRC(void);
 void ChangeModeAudioProcessing(uint8_t bBlocked);
+
+void* GetDriverVariationPtr(uint32_t DriverIndex);
 
 #endif /* _AUDIOPROCESSING_H_ */
 

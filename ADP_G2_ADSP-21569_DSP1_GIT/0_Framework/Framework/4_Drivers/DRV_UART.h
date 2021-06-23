@@ -15,7 +15,4 @@ void DoneRxDMAIRQUART_CAN(void);
 void DoneTxDMAIRQUART_CAN(void);
 int32_t GetRxAddrUART_CAN(void);
 
-int ExecUART(void);
-
-
 #endif /* __DRV_UART_H__ */

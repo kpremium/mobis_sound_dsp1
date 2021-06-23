@@ -56,6 +56,29 @@ typedef struct _ST_MIPS_INFO
     float fMaxMips;
 }ST_MIPS_INFO;
 
+typedef struct ASRCInfo_tag
+{
+	uint8_t  AsrcIdx;
+	uint8_t  IsUsed;
+	uint8_t  PeriId;
+	uint8_t  AutoMute;
+	uint8_t  IFormat;
+	uint8_t  OFormat;
+	uint8_t  WordLen;
+	uint8_t  MuteOut;
+}ASRCInfo_t; // 8 bytes
+
+typedef enum DriverIndex_tag
+{
+	Driver_INTERRUPT,
+	Driver_PDMA,
+	Driver_SPORT,
+	Driver_ASRC,
+	Driver_SPDIF,
+	Driver_PCG,
+	Driver_MAX
+}DriverIndex_t;
+
 /* adi_ss_fw_utility.asm */
 void CopyFix2Float(volatile uint32_t *pInBuffer, volatile float32_t *pOutBuffer, uint32_t nBlockSize, uint32_t nShiftFlag);
 uint32_t CopyFloat2Fix(volatile float32_t *pInBuffer, volatile uint32_t *pOutBuffer, uint32_t nBlockSize, uint32_t nShiftFlag);

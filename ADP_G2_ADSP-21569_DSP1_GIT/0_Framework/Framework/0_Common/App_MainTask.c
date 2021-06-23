@@ -86,8 +86,7 @@ int main(int argc, char *argv[])
 		ExecCommsPkg();
 
 		ExecAudioProcessing();
-
-		ExecUART();
+		
 	}
 
 }
@@ -179,7 +178,7 @@ static uint32_t MAIN_DRIVER_First_Initialize(void)
 
 	result = DRV_DAI_InitSRU(); //InitSRUDAI
 	result |= DRV_PCG_Init(); //InitPCG
-	result |= DRV_SPDIF_Init(); //InitDIR
+	//result |= DRV_SPDIF_Init(); //InitDIR
 	result |= DRV_ASRC_Init(); //InitASRC
 	result |= DRV_GPIO_Init(); //InitGPIO
    result |= DRV_SPI_Init(); //InitSPI

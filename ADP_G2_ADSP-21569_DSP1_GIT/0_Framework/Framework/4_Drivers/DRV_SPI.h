@@ -11,8 +11,6 @@
 void ISR_SPI0_RX(unsigned int id, void* arg);
 void ISR_SPI0_TX(unsigned int id, void* arg);
 
-void InitSPI0(void);
-void InitSPI1(void);
 void InitSPI2(void);
 void DisableSPI2(void);
 

@@ -20,22 +20,6 @@
 #define pREG_SPI2_CTL (volatile void *)0x1
 #endif
 
-void InitSPI0(void)
-{
-}
-
-void DisableSPI0(void)
-{
-}
-
-void InitSPI1(void)
-{
-}
-
-void DisableSPI1(void)
-{
-}
-
 static void configMasterSPI2(void)
 {
 	*pREG_SPI2_CTL = 0;
@@ -71,11 +55,6 @@ int DRV_SPI_Init(void)
 	SetupSPI2MM();
 #endif
 
-	return PASSED;
-}
-
-int DoneSPI(void)
-{
 	return PASSED;
 }
 

@@ -105,8 +105,8 @@ float32_t fBlock_IP_SSn1[NUM_SSn1_BLOCK_SAMPLES]; // Zero-based buffer to save m
 float32_t fBlock_OP_SSn1[NUM_SSn1_BLOCK_SAMPLES]; // Zero-based buffer to save memory for SSn1 output
 
 /* I/O buffer and pointers for SSn '1' instance */
-float32_t *ip_data_SSn1[NUM_IP_CHANNELS_SSn1];
-float32_t *op_data_SSn1[NUM_OP_CHANNELS_SSn1];
+float32_t *ip_data_SSn1[AP_SSN1_I_CH];
+float32_t *op_data_SSn1[AP_SSN1_O_CH];
 
 /*============= For 2nd SSn '2' =============*/
 // Elements for SigmaStudio instance for SSn 2
@@ -126,8 +126,8 @@ float32_t fBlock_IP_SSn2[NUM_SSn2_BLOCK_SAMPLES]; // Zero-based buffer to save m
 float32_t fBlock_OP_SSn2[NUM_SSn2_BLOCK_SAMPLES]; // Zero-based buffer to save memory for SSn2 output
 
 /* I/O buffer and pointers for SSn '2' instance */
-float32_t *ip_data_SSn2[NUM_IP_CHANNELS_SSn2];
-float32_t *op_data_SSn2[NUM_OP_CHANNELS_SSn2];
+float32_t *ip_data_SSn2[AP_SSN2_I_CH];
+float32_t *op_data_SSn2[AP_SSN2_O_CH];
 
 // Memory for storing Mips information
 #ifdef USE_MEASURE_MIPS_SSN
@@ -663,8 +663,8 @@ void InitSS4SH(void)
 	/* Initialize the SSn1 instance */
 	oSSnConfig.hSSComm = hCommHandle;
 	oSSnConfig.nBlockSize = NUM_SSn1_BLOCK_SAMPLES;
-	oSSnConfig.nInChannels = NUM_IP_CHANNELS_SSn1;
-	oSSnConfig.nOutChannels = NUM_OP_CHANNELS_SSn1;
+	oSSnConfig.nInChannels = AP_SSN1_I_CH;
+	oSSnConfig.nOutChannels = AP_SSN1_O_CH;
 	oSSnConfig.bSkipProcessOnCRCError = 0;
 #if defined(LOAD_SS4SH_FROM_FLASH)
 	oSSnConfig.bSkipInitialDownload = 1U;
@@ -730,8 +730,8 @@ void InitSS4SH(void)
 	/* Initialize the SSn2 instance */
 	oSSnConfig.hSSComm = hCommHandle;
 	oSSnConfig.nBlockSize = NUM_SSn2_BLOCK_SAMPLES;
-	oSSnConfig.nInChannels = NUM_IP_CHANNELS_SSn2;
-	oSSnConfig.nOutChannels = NUM_OP_CHANNELS_SSn2;
+	oSSnConfig.nInChannels = AP_SSN2_I_CH;
+	oSSnConfig.nOutChannels = AP_SSN2_O_CH;
 	oSSnConfig.bSkipProcessOnCRCError = 0;
 #if defined(LOAD_SS4SH_FROM_FLASH)
 	oSSnConfig.bSkipInitialDownload = 1U;
@@ -876,16 +876,6 @@ void InitSS4SH(void)
 	}
 
 	return;
-}
-
-void DoneSS4SH(void)
-{
-	return;
-}
-
-int ExecSS4SH(void)
-{
-	return 0;
 }
 
 int ProcSS4SH_SSn1(void)

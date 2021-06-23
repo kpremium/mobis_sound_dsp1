@@ -7,326 +7,87 @@ and its licensors.
 
 #include <services/spu/adi_spu.h>
 #include "common.h"
+#include "SYSTEM_SPU.h"
 
-/* SPU memory */
-static uint8_t gSpuMemory[ADI_SPU_MEMORY_SIZE];
-/* SPU handle */
-static ADI_SPU_HANDLE ghSpu;
-/* SPU instance */
-#define SPU_ID 0
+// The System Protection Unit (SPU) instance number to be initialized
+#define D_SYS_SPU_DEV_ID				(0)
 
-int SYSTEM_SPU_Init(void)
-{
-    if(adi_spu_Init(SPU_ID, gSpuMemory, NULL, NULL, &ghSpu) != ADI_SPU_SUCCESS)
-    {
-        //printf("Failed to initialize SPU service \n");
-        return FAILED;
-    }
-    /* Make SPI2 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPI2_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPI2 \n");
-    	return FAILED;
-    }
-    /* Make SPI1 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPI1_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPI1 \n");
-    	return FAILED;
-    }
-    /* Make SPI0 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPI0_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPI0 \n");
-    	return FAILED;
-    }
-    /* Make LP0 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_LP0_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for LP0 \n");
-    	return FAILED;
-    }
-    /* Make LP0 DMA30 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA30_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for LP0 DMA30 \n");
-    	return FAILED;
-    }
-    /* Make LP1 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_LP1_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for LP1 \n");
-    	return FAILED;
-    }
-    /* Make LP1 DMA36 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA36_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for LP1 DMA36 \n");
-    	return FAILED;
-    }
-    /* Make GPIO Port A to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_PORTA_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for PORTA \n");
-    	return FAILED;
-    }
-    /* Make GPIO Port B to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_PORTB_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for PORTB \n");
-    	return FAILED;
-    }
-    /* Make GPIO Port C to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_PORTC_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for PORTC \n");
-    	return FAILED;
-    }
-    /* Make SPT0A to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT0A_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT0A \n");
-    	return FAILED;
-    }
-    /* Make SPT0A DMA0 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA0_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT0A DMA0 \n");
-    	return FAILED;
-    }
-    /* Make SPT0B to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT0B_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT0B \n");
-    	return FAILED;
-    }
-    /* Make SPT0B DMA1 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA1_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT0B DMA1 \n");
-    	return FAILED;
-    }
-    /* Make SPT1A to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT1A_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT1A \n");
-    	return FAILED;
-    }
-    /* Make SPT1A DMA2 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA2_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT1A DMA2 \n");
-    	return FAILED;
-    }
-    /* Make SPT1B to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT1B_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT1B \n");
-    	return FAILED;
-    }
-    /* Make SPT1B DMA3 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA3_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT1B DMA3 \n");
-    	return FAILED;
-    }
-    /* Make SPT2A to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT2A_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT2A \n");
-    	return FAILED;
-    }
-    /* Make SPT2A DMA4 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA4_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT2A DMA4 \n");
-    	return FAILED;
-    }
-    /* Make SPT2B to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT2B_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT2B \n");
-    	return FAILED;
-    }
-    /* Make SPT2B DMA5 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA5_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT2B DMA5 \n");
-    	return FAILED;
-    }
-    /* Make SPT3A to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT3A_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT3A \n");
-    	return FAILED;
-    }
-    /* Make SPT3A DMA6 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA6_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT3A DMA6 \n");
-    	return FAILED;
-    }
-    /* Make SPT3B to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT3B_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT3B \n");
-    	return FAILED;
-    }
-    /* Make SPT3B DMA7 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA7_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT3B DMA7 \n");
-    	return FAILED;
-    }
-    /* Make MDMA0_SRC DMA8 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA8_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for MDMA0_SRC DMA8 \n");
-    	return FAILED;
-    }
-    /* Make MDMA0_DST DMA9 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA9_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for MDMA0_DST DMA9 \n");
-    	return FAILED;
-    }
-    /* Make MDMA1_SRC DMA18 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA18_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for MDMA1_SRC DMA18 \n");
-    	return FAILED;
-    }
-    /* Make MDMA1_DST DMA19 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA19_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for MDMA1_DST DMA19 \n");
-    	return FAILED;
-    }
-    /* Make SPT4A to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT4A_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT4A \n");
-    	return FAILED;
-    }
-    /* Make SPT4A DMA10 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA10_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT4A DMA10 \n");
-    	return FAILED;
-    }
-    /* Make SPT4B to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT4B_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT4B \n");
-    	return FAILED;
-    }
-    /* Make SPT4B DMA11 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA11_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT4B DMA11 \n");
-    	return FAILED;
-    }
-    /* Make SPT5A to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT5A_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT5A \n");
-    	return FAILED;
-    }
-    /* Make SPT5A DMA12 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA12_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT5A DMA12 \n");
-    	return FAILED;
-    }
-    /* Make SPT5B to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT5B_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT5B \n");
-    	return FAILED;
-    }
-    /* Make SPT5B DMA13 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA13_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT5B DMA13 \n");
-    	return FAILED;
-    }
-    /* Make SPT6A to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT6A_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT6A \n");
-    	return FAILED;
-    }
-    /* Make SPT6A DMA14 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA14_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT6A DMA14 \n");
-    	return FAILED;
-    }
-    /* Make SPT6B to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT6B_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT6B \n");
-    	return FAILED;
-    }
-    /* Make SPT6B DMA15 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA15_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT6B DMA15 \n");
-    	return FAILED;
-    }
-    /* Make SPT7A to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT7A_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT7A \n");
-    	return FAILED;
-    }
-    /* Make SPT7A DMA16 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA16_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT7A DMA16 \n");
-    	return FAILED;
-    }
-    /* Make SPT7B to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_SPORT7B_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT7B \n");
-    	return FAILED;
-    }
-    /* Make SPT7B DMA17 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA17_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for SPORT7B DMA17 \n");
-    	return FAILED;
-    }
-    /* Make UART1Tx DMA34 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA34_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for UART1Tx DMA34 \n");
-    	return FAILED;
-    }
-    /* Make UART1Rx DMA35 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA35_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for UART1Rx DMA35 \n");
-    	return FAILED;
-    }
-    /* Make UART2Tx DMA37 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA37_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for UART2Tx DMA37 \n");
-    	return FAILED;
-    }
-    /* Make UART2Rx DMA38 to generate secure transactions */
-    if(adi_spu_EnableMasterSecure(ghSpu, ADI_SPU0_DMA38_ID, true) != ADI_SPU_SUCCESS)
-    {
-    	//printf("Failed to enable Master secure for UART2Rx DMA38 \n");
-    	return FAILED;
-    }
-    return PASSED;
+#define CheckResult(result)				\
+if (result != ADI_SPU_SUCCESS) {		\
+	printf("SPU failure\n");			\
+	return FAILED;						\
 }
 
-int DoneSPU(void)
-{
-    return PASSED;
-}
+static ADI_SPU_HANDLE shSpu;
 
+static uint8_t saiSpuMemory[ADI_SPU_MEMORY_SIZE * 4];
+
+uint8_t saiSpuPidMap[E_SYS_SPU_PID_MAX] =
+{
+    D_SYS_SPU_WP_SPORT0A,
+    D_SYS_SPU_WP_SPORT0B,
+    D_SYS_SPU_WP_SPORT1A,
+    D_SYS_SPU_WP_SPORT1B,
+    D_SYS_SPU_WP_SPORT2A,
+    D_SYS_SPU_WP_SPORT2B,
+    D_SYS_SPU_WP_SPORT3A,
+    D_SYS_SPU_WP_SPORT3B,
+    D_SYS_SPU_WP_SPORT4A,
+    D_SYS_SPU_WP_SPORT4B,
+    D_SYS_SPU_WP_SPORT5A,
+    D_SYS_SPU_WP_SPORT5B,
+    D_SYS_SPU_WP_SPORT6A,
+    D_SYS_SPU_WP_SPORT6B,
+    D_SYS_SPU_WP_SPORT7A,
+    D_SYS_SPU_WP_SPORT7B,    
+    D_SYS_SPU_WP_LP0,    
+    D_SYS_SPU_WP_LP1,
+    D_SYS_SPU_WP_LP0_DMA30,
+    D_SYS_SPU_WP_LP1_DMA36,
+    D_SYS_SPU_WP_PORTA,
+    D_SYS_SPU_WP_PORTB,
+    D_SYS_SPU_WP_PORTC,    
+    D_SYS_SPU_WP_SPORT0A_DMA0,   
+    D_SYS_SPU_WP_SPORT0B_DMA1,
+    D_SYS_SPU_WP_SPORT1A_DMA2,    
+    D_SYS_SPU_WP_SPORT1B_DMA3,    
+    D_SYS_SPU_WP_SPORT2A_DMA4,    
+    D_SYS_SPU_WP_SPORT2B_DMA5,    
+    D_SYS_SPU_WP_SPORT3A_DMA6,    
+    D_SYS_SPU_WP_SPORT3B_DMA7,
+    D_SYS_SPU_WP_SPORT4A_DMA10,    
+    D_SYS_SPU_WP_SPORT4B_DMA11,    
+    D_SYS_SPU_WP_SPORT5A_DMA12,    
+    D_SYS_SPU_WP_SPORT5B_DMA13,    
+    D_SYS_SPU_WP_SPORT6A_DMA14,    
+    D_SYS_SPU_WP_SPORT6B_DMA15,    
+    D_SYS_SPU_WP_SPORT7A_DMA16,
+    D_SYS_SPU_WP_SPORT7B_DMA17,
+    D_SYS_SPU_WP_UART1_TX_DMA34,
+    D_SYS_SPU_WP_UART1_RX_DMA35,
+    D_SYS_SPU_WP_UART2_TX_DMA37,
+    D_SYS_SPU_WP_UART2_RX_DMA38,
+    D_SYS_SPU_WP_MDMA0_DDE0_DMA8, 
+    D_SYS_SPU_WP_MDMA0_DDE1_DMA9,
+    D_SYS_SPU_WP_MDMA1_DDE0_DMA18,
+    D_SYS_SPU_WP_MDMA1_DDE1_DMA19,
+    D_SYS_SPU_WP_SPI0,
+    D_SYS_SPU_WP_SPI1,
+    D_SYS_SPU_WP_SPI2
+};
+
+uint32_t SYSTEM_SPU_Init(void)
+{
+	ADI_SPU_RESULT result;
+	int aa = 0;
+
+	result = adi_spu_Init(D_SYS_SPU_DEV_ID, saiSpuMemory, NULL, NULL, &shSpu);
+	CheckResult(result);
+
+	for(aa = 0; aa < E_SYS_SPU_PID_MAX; aa++) {
+		result = adi_spu_EnableMasterSecure(shSpu, saiSpuPidMap[aa], true);
+		CheckResult(result);
+	}
+
+	return PASSED;
+}

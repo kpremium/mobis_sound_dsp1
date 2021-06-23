@@ -4,6 +4,7 @@
 #include "common.h"
 #include "MASD.h"
 #include "SS4SH.h"
+#include "DRV_ASRC.h"
 #include "Variation_MASD.h"
 
 // Memory for storing Mips information
@@ -123,7 +124,6 @@ uint32_t sPDMA_CAMP_I_Buf[PINGPONG_BUF][AP_CAM_I_CH][AP_A2B_BLKSIZ];
 uint32_t sPDMA_CAMP_O_Buf[PINGPONG_BUF][AP_CAM_O_CH][AP_A2B_BLKSIZ];
 
 
-
 volatile int32_t Pipo_I_ANCASD			= 1;
 volatile int32_t Pipo_O_ANCASD			= 1;
 volatile int32_t Pipo_I_AMP				= 1;
@@ -136,7 +136,46 @@ volatile int32_t Pipo_O_VESS			= 1;
 volatile int32_t Pipo_I_CAMPING			= 1;
 volatile int32_t Pipo_O_CAMPING			= 1;
 
+static ASRCInfo_t sASRCInfo[ASRC_MAX] = {
+	{ASRC_NUM0,	true,	E_DRV_ASRC0,	false,	E_DRV_ASRC_I_I2S,	E_DRV_ASRC_O_TDM,	E_DRV_ASRC_WORD_LENGTH_24,	false},
+	{ASRC_NUM1,	true,	E_DRV_ASRC1,	false,	E_DRV_ASRC_I_I2S,	E_DRV_ASRC_O_TDM,	E_DRV_ASRC_WORD_LENGTH_24,	false},
+};
 
+
+void* GetDriverVariationPtr(uint32_t DriverIndex)
+{
+	void* VairationPtr = NULL;
+
+  /*
+	if(DriverIndex == Driver_INTERRUPT) {
+		VairationPtr = (void *)sInterruptInfo;
+	}
+	else if(DriverIndex == Driver_PDMA) {
+		VairationPtr = (void *)sPDMAInfo;
+	}
+	else if(DriverIndex == Driver_SPORT) {
+		VairationPtr = (void *)sSPORTInfo;
+	}
+	else if(DriverIndex == Driver_ASRC) {
+		VairationPtr = (void *)sASRCInfo;
+	}
+	else if(DriverIndex == Driver_SPDIF) {
+		VairationPtr = (void *)sSPDIFInfo;
+	}
+	else if(DriverIndex == Driver_PCG) {
+		VairationPtr = (void *)sPCGInfo;
+	}
+	else {
+		VairationPtr = NULL;
+	}
+  */
+
+   if(DriverIndex == Driver_ASRC) {
+		VairationPtr = (void *)sASRCInfo;
+	}
+   
+	return VairationPtr;
+}
 
 uint32_t MAIN_AudioProcessingInit(void)
 {
@@ -159,18 +198,6 @@ uint32_t MAIN_AudioProcessingInit(void)
   return PASSED;
 }
 
-void DoneAudioProcessing(void)
-{
-
-#if defined(USE_MASD)
-	DoneMASD();
-#endif
-
-#if defined(USE_SS4SH)
-	DoneSS4SH();
-#endif
-}
-
 void ExecAudioProcessing(void)
 {
 
@@ -178,9 +205,6 @@ void ExecAudioProcessing(void)
 	ExecMASD();
 #endif
 
-#if defined(USE_SS4SH)
-	ExecSS4SH();
-#endif
 }
 
 void MAIN_AudioProcessing_uL(unsigned int id, void* arg)

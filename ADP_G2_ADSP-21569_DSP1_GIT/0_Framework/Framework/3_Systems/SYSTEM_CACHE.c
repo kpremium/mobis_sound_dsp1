@@ -11,6 +11,7 @@ Description: Functions in this file configure the I and D cache
 *****************************************************************************/
 
 #include "common.h"
+#include "SYSTEM_CACHE.h"
 
 /*============================== D E F I N E S ==============================*/
 
@@ -32,24 +33,6 @@ Description: Functions in this file configure the I and D cache
 		asm("nop;");					\
 		asm("nop;");					\
     }while (0) /* do-while-zero needed for Misra Rule 19.4 */
-
-
-/* All caches are set for 16kB size */
-#define DISABLE_I_D_CACHE					(0x404040)
-#define ENABLE_I_D_CACHE					(0x414141)
-#define ENABLE_I_CACHE_ONLY					(0x404041)
-#define ENABLE_D_CACHE_ONLY					(0x414140)
-
-#define L2_BW_START_ADDRESS					(0x20000000)
-#define L2_BW_END_ADDRESS					(0x200BFFFF)
-#define L2_BW_UNCACHED_START_ADDRESS		(0x200C0000)
-#define L2_BW_UNCACHED_END_ADDRESS			(0x200FFFFF)
-#define L2_SW_START_ADDRESS					(0x00B80000)
-#define L2_SW_END_ADDRESS					(0x00BDFFFF)
-#define L1_MP_START_ADDRESS					(0x28240000)
-#define L1_MP_END_ADDRESS					(0x2839FFFF)
-#define SPI2_MEM_UNCACHE_START_ADDRESS		(0x60000000)
-#define SPI2_MEM_UNCACHE_END_ADDRESS		(0x6041FFFF)
 
 /*================================  D A T A  ================================*/
 
@@ -146,11 +129,6 @@ int InitCache(void)
 {
 	adi_ss_config_I_D_cache();
 
-	return PASSED;
-}
-
-int DoneCache(void)
-{
 	return PASSED;
 }
 

@@ -1,11 +1,7 @@
 #include <sru21569.h>
-
 #include <adi_types.h>
-
 #include "common.h"
-
 #include "SYSTEM_PWR.h"
-
 #include "DRV_GPIO.h"
 
 
@@ -492,13 +488,6 @@ uint32_t DRV_Timer_Init(void)
 	result = initDelayTimer();
 	if(result == FAILED)
 		return result;
-
-	return result;
-}
-
-int32_t DoneTimer(void)
-{
-	int32_t result = PASSED;
 
 	return result;
 }

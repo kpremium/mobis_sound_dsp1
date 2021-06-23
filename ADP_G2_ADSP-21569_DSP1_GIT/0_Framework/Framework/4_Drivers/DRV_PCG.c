@@ -16,4 +16,3 @@ uint32_t DRV_PCG_Init(void)
 
 	return PASSED;
 }
-

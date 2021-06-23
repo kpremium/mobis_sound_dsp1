@@ -55,3 +55,20 @@ void ClrGPIO_PB06(void)
 	*pREG_PORTB_DATA_CLR = GPIO_PORTB_06;
 }
 
+#if (EZ_KIT_BOARD == 1u)
+void SetGPIO_PB03(void)
+{
+	*pREG_PORTB_DATA_SET = GPIO_PORTB_03;
+}
+
+void ClrGPIO_PB03(void)
+{
+	*pREG_PORTB_DATA_CLR = GPIO_PORTB_03;
+}
+
+void TglGPIO_PB03(void)
+{
+	*pREG_PORTB_DATA_TGL = GPIO_PORTB_03;
+}
+#endif
+

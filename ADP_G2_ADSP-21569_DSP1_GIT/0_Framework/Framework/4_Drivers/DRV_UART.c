@@ -14,21 +14,6 @@ volatile int32_t gUARTBusyRxNum = 0;
 volatile int32_t gUARTBusyTxFlg = 0;
 volatile int32_t gUARTBusyTxNum = 0;
 
-int InitUART(void)
-{
-	return PASSED;
-}
-
-int DoneUART(void)
-{
-	return PASSED;
-}
-
-int ExecUART(void)
-{
-	return PASSED;
-}
-
 void InitUART_CAN(uint32_t baudrate)
 {
 #if(CAN_UART_INSTANCE == 0u)
